@@ -1,0 +1,96 @@
+name: liquidaity-prod
+
+services:
+  # This service builds and runs the custom api/client
+  ghostfolio:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: liquidaity/ghostfolio:latest
+    container_name: liquidaity-app
+    restart: unless-stopped
+    init: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - ../.env
+    ports:
+      - '3333:3333'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f http://localhost:3333/api/v1/health']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # The Python/Streamlit tradehero app
+  tradehero:
+    build:
+      context: ../code/tradehero
+      dockerfile: Dockerfile
+    image: liquidaity/tradehero:latest
+    container_name: liquidaity-tradehero
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    ports:
+      - '8080:8080'
+
+  # The database service
+  postgres:
+    image: docker.io/library/postgres:15-alpine
+    container_name: liquidaity-postgres
+    restart: unless-stopped
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_READ_SEARCH
+      - FOWNER
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - ../.env
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'pg_isready -d "$${POSTGRES_DB}" -U $${POSTGRES_USER}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # The redis cache service
+  redis:
+    image: docker.io/library/redis:alpine
+    container_name: liquidaity-redis
+    restart: unless-stopped
+    user: '999:1000'
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - ../.env
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
+    healthcheck:
+      test:
+        ['CMD-SHELL', 'redis-cli --pass "$${REDIS_PASSWORD}" ping | grep PONG']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    name: liquidaity_postgres_data

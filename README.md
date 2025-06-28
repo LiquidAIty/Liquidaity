@@ -87,7 +87,10 @@ LiquidAIty is a next-generation, AI-driven trading platform that empowers retail
 
 ## 🔗 Key Repositories (cloned into `/code_sources/`)
 
-- [https://github.com/alpacahq/alpaca-mcp-server](https://github.com/alpacahq/alpaca-mcp-server)
+https://github.com/fuchenru/TradingHero-
+
+[https://github.com/alpacahq/alpaca-mcp-server](https://github.com/alpacahq/alpaca-mcp-server)
+
 - [https://github.com/foduucom/stockmarket-pattern-detection-yolov8](https://github.com/foduucom/stockmarket-pattern-detection-yolov8)
 - [https://github.com/nautechsystems/nautilus_trader](https://github.com/nautechsystems/nautilus_trader)
 - [https://github.com/alpacahq/options-wheel](https://github.com/alpacahq/options-wheel)
