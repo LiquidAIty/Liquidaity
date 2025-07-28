@@ -1,7 +1,5 @@
 {
-  "installation": {
-    "version": "21.3.0"
-  },
+  "installation": { "version": "21.3.0" },
   "targetDefaults": {
     "@nx/esbuild:esbuild": {
       "cache": true,
@@ -10,17 +8,10 @@
     }
   },
   "plugins": [
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
+    { "plugin": "@nx/eslint/plugin", "options": { "targetName": "lint" } },
     {
       "plugin": "@nx/jest/plugin",
-      "options": {
-        "targetName": "test"
-      },
+      "options": { "targetName": "test" },
       "exclude": ["api-e2e/**/*", "api-e2e/**/*"]
     },
     {
@@ -48,12 +39,7 @@
         "watchDepsTargetName": "watch-deps"
       }
     },
-    {
-      "plugin": "@nx/playwright/plugin",
-      "options": {
-        "targetName": "e2e"
-      }
-    }
+    { "plugin": "@nx/playwright/plugin", "options": { "targetName": "e2e" } }
   ],
   "generators": {
     "@nx/react": {
@@ -63,13 +49,9 @@
         "linter": "eslint",
         "bundler": "vite"
       },
-      "component": {
-        "style": "tailwind"
-      },
-      "library": {
-        "style": "tailwind",
-        "linter": "eslint"
-      }
+      "component": { "style": "tailwind" },
+      "library": { "style": "tailwind", "linter": "eslint" }
     }
-  }
+  },
+  "nxCloudId": "6886cedf9e7a776f49ed4b9c"
 }
